@@ -45,11 +45,58 @@ function getplots(id)
         };
     //Create the bar plot 
     Plotly.newPlot("bar",data,layout);
+
+// Bubble Chart
+    var trace1 = {
+        x: sampledata.samples[0].otu_ids,
+        y: sampledata.samples[0].sample_values,
+        mode:"markers",
+        marker: {
+            size:sampledata.samples[0].sample_values,
+            color:sampledata.samples[0].otu_ids
+        },
+        text: sampledata.samples[0].otu_labels
+    };
+// Setting the bubble plot layout
+    var layout1 = {
+        xaxis :{title:"OTU ID"},
+        height :600,
+        width :1000
+    };
+// Create data variable
+    var data1 = [trace1];
+// Creating bubble plot
+    Plotly.newPlot("bubble",data1,layout1);
     });
 }
 //Create function for the change in events
 function optionChanged(id){
     getplots(id);
+    getdemo(id);
+}
+// Function for demographics
+
+function getdemo(id){
+    // Read the json to get data
+    d3.json("samples.json").then(data => {
+        var metadata = data.metadata;
+        console.log(metadata);
+    
+    // Filter metadata info by id
+    var metaid = metadata.filter(meta => meta.id.toString() === id)[0];
+    // Select the demographic panel to put the data in 
+    var demoinfo = d3.select("#sample-metadata");
+
+    // Clear demographic panel each time before another id info is displayed
+    demoinfo.html("");
+
+    // Read the necessary demographic data for id and append the info to panel
+    
+    Object.entries(metaid).forEach((key) =>{
+        demoinfo.append("h5").text(key[0].toUpperCase() + ":" +key[1] + "\n");
+    });
+
+    });
 }
 
 // Create function for initializing the data
@@ -66,6 +113,7 @@ function init(){
     });
     //Call the functions to display data and plot the graph 
     getplots(data.names[0]);
+    getdemo(data.names[0]);
     });
 }
 init();
