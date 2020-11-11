@@ -8,4 +8,4 @@ Step 2 : Created a bubble chart that displays each sample
 
 Step 3 : Created a Gauge  Chart (Bonus)
 
-Please click the link to the dashoboard :  https://roshinigau.github.io/Plotly-Challenge/
+Please click the link to the dashboard :  https://roshinigau.github.io/Plotly-Challenge/

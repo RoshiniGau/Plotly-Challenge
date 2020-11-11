@@ -11,7 +11,7 @@ function buildGauge(WFREQ) {
     let x = radius * Math.cos(radians);
     let y = radius * Math.sin(radians);
 
-    // Path May Have to Change to Create a Better Triangle
+    // Path Have to Change to Create a Better Triangle
     let mainPath = "M-.0 -0.05 L  .0 0.05 L";
     let pathX = String(x);
     let space = " ";
