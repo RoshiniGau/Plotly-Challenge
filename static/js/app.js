@@ -1,28 +1,32 @@
-function getplots(id)
+function getplots(fname)
 {
-    //Read samples.json
+    console.log(fname);
+    //Read samples.json and filter 
     d3.json("samples.json").then(sampledata =>{
         console.log(sampledata);
-        var id = sampledata.samples[0].otu_ids;
+        var sampleResponse = sampledata.samples.filter(sampleObj => sampleObj.id === fname);
+        response = sampleResponse[0];
+        //console.log(response);
+        var id = response.otu_ids;
         console.log(id);
-        var samplevalues = sampledata.samples[0].sample_values.slice(0,10).reverse();
+        var samplevalues = response.sample_values.slice(0,10).reverse();
         console.log(samplevalues);
-        var labels = sampledata.samples[0].otu_labels.slice(0,10);
+        var labels = response.otu_labels.slice(0,10);
         console.log(labels);
     // Get top 10 otu id's for the plot and reversing it .
-        var otu_top = (sampledata.samples[0].otu_ids.slice(0,10)).reverse();
+        var otu_top = (response.otu_ids.slice(0,10)).reverse();
     // Get otu id's to the desired form for the plot
         var otu_id = otu_top.map(d => "OTU" + d);
         console.log(`OTU ID : ${otu_id}`);
     //Get the top 10 labels for the plot 
-        var lab = sampledata.samples[0].otu_labels.slice(0,10);
+        var lab = response.otu_labels.slice(0,10);
         console.log(`OTU Label : ${lab}`);
         var trace = {
             x:samplevalues,
             y: otu_id,
             text : labels,
             marker :{
-                color :'lightcoral'},
+            color :'lightcoral'},
             type: "bar",
             orientation : "h"
 
@@ -48,16 +52,16 @@ function getplots(id)
 
     // Bubble Chart
     var trace1 = {
-        x: sampledata.samples[0].otu_ids,
-        y: sampledata.samples[0].sample_values,
+        x: response.otu_ids,
+        y: response.sample_values,
         mode:"markers",
         marker: {
-            size:sampledata.samples[0].sample_values,
-            color:sampledata.samples[0].otu_ids
+            size:response.sample_values,
+            color:response.otu_ids
         },
-        text: sampledata.samples[0].otu_labels
+        text: response.otu_labels
     };
-console.log(trace1)
+    console.log(trace1)
     // Setting the bubble plot layout
     var layout1 = {
         xaxis :{title:"OTU ID"},
@@ -117,8 +121,9 @@ function init(){
         dropdown.append("option").text(name).property("value");
     });
     //Call the functions to display data and plot the graph 
-    getplots(data.names[0]);
-    getdemo(data.names[0]);
+     const fsample = data.names[0]
+     getplots(fsample);
+     getdemo(fsample);
     });
 }
 init();
